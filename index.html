@@ -95,13 +95,19 @@
   nav.menu ul { display: flex; gap: 4px; list-style: none; margin: 0; padding: 0; }
   nav.menu a { display: block; padding: 8px 12px; border-radius: 10px; text-decoration: none; color: var(--text); font-size: 16px; font-weight: 500; }
   nav.menu a:hover { background: var(--surface-2); }
-  .menu-btn { display: none; background: none; border: 1px solid var(--line); border-radius: 10px; padding: 8px 12px; font: inherit; font-size: 16px; color: var(--ink); cursor: pointer; }
+  nav.menu a.ativo { background: var(--accent-soft); color: var(--accent-strong); }
+  /* Celular: menu vira uma fileira de botões que desliza para o lado, sempre à vista */
   @media (max-width: 860px) {
-    .menu-btn { display: block; }
-    nav.menu { display: none; position: absolute; top: 68px; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--line); padding: 8px max(20px, env(safe-area-inset-right, 0px)) 16px max(20px, env(safe-area-inset-left, 0px)); }
-    nav.menu.open { display: block; }
-    nav.menu ul { flex-direction: column; }
-    nav.menu a { padding: 12px; font-size: 18px; }
+    html { scroll-padding-top: 112px; }
+    .top .wrap { flex-wrap: wrap; height: auto; padding-block: 10px 0; gap: 8px; }
+    .brand { font-size: 20px; }
+    .brand svg { width: 30px; height: 30px; }
+    nav.menu { width: 100%; overflow-x: auto; scrollbar-width: none; padding-bottom: 10px; }
+    nav.menu::-webkit-scrollbar { display: none; }
+    nav.menu ul { gap: 6px; }
+    nav.menu li:last-child { padding-right: 8px; }
+    nav.menu a { white-space: nowrap; padding: 6px 14px; font-size: 15px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); }
+    nav.menu a.ativo { background: var(--accent); color: var(--on-accent); border-color: var(--accent); }
   }
 
   /* Abertura */
@@ -170,7 +176,8 @@
   .results li { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; padding: 14px 0; border-top: 1px solid var(--deep-line); }
   .results .rt { font-family: var(--serif); font-size: 26px; color: var(--on-deep); white-space: nowrap; font-variant-numeric: tabular-nums; }
   .results .rt em { font-style: normal; font-family: var(--sans); font-size: 14px; color: var(--on-deep-warn); display: block; text-align: right; }
-  .results .rl { font-size: 16px; color: var(--on-deep-soft); }
+  .results .rl { font-size: 16px; color: var(--on-deep-soft); line-height: 1.35; }
+  .results .rl small { display: block; margin-top: 4px; font-size: 13px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--on-deep-muted); }
   .formula { margin-top: 18px; font-size: 14px; color: var(--on-deep-muted); border-top: 1px solid var(--deep-line); padding-top: 14px; }
   .formula code { font-family: var(--mono); color: var(--on-deep-soft); }
 
@@ -185,6 +192,7 @@
   .type dt { font-weight: 700; color: var(--ink); }
   .type dd { margin: 0 0 8px; color: var(--muted); }
   .note { margin-top: 24px; color: var(--muted); font-size: 17px; }
+  .swipe-hint { display: none; margin: -14px 0 14px; font-size: 15px; font-weight: 600; color: var(--accent); }
 
   /* Dia */
   .check { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
@@ -223,7 +231,7 @@
   .doc > * { min-width: 0; }
   @media (max-width: 760px) { .doc { grid-template-columns: 1fr; gap: 24px; } }
   .avatar { width: 220px; height: 220px; max-width: 100%; border-radius: 28px; background: var(--surface-2); border: 2px dashed var(--line); display: grid; place-items: center; color: var(--muted); font-size: 15px; text-align: center; padding: 20px; }
-  @media (max-width: 760px) { .avatar { width: 160px; height: 160px; } }
+  @media (max-width: 760px) { .avatar { width: 120px; height: 120px; border-radius: 22px; } }
   .doc h2 { margin-bottom: 6px; }
   .reg { color: var(--accent-strong); font-weight: 600; margin-bottom: 18px; }
   .contact { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
@@ -243,9 +251,32 @@
 
   @media (max-width: 600px) {
     body { font-size: 17px; }
-    section { padding-block: 64px; }
+    section { padding-block: 52px; }
+    .hero { padding-block: 32px 48px; }
+    .hero .lead { margin: 16px 0 24px; }
+    .section-head { margin-bottom: 26px; }
+    .lead { font-size: 18px; }
+    .btns .btn, .contact .btn { flex: 1 1 100%; justify-content: center; }
+    .panel, .warn, .calc, .hero-card { padding: 20px; }
+    .hero-card li { padding: 10px 0; }
+    .callout { padding: 16px 18px; gap: 12px; margin-top: 20px; }
+    .callout svg { width: 22px; height: 22px; }
     .fast th, .fast td { padding: 14px; }
     .fast td:last-child { white-space: normal; }
+    .rec-steps { gap: 14px; }
+    .faq summary { font-size: 19px; padding-block: 18px; }
+    .faq summary::after { top: 12px; }
+    /* Tipos de anestesia: cartões lado a lado, deslizando com o dedo */
+    .swipe-hint { display: block; }
+    .types {
+      grid-auto-flow: column; grid-template-columns: none; grid-auto-columns: 84%; gap: 14px;
+      overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none;
+      margin-inline: calc(-1 * max(20px, env(safe-area-inset-left, 0px)));
+      padding: 2px max(20px, env(safe-area-inset-right, 0px)) 6px max(20px, env(safe-area-inset-left, 0px));
+      scroll-padding-inline: max(20px, env(safe-area-inset-left, 0px));
+    }
+    .types::-webkit-scrollbar { display: none; }
+    .type { scroll-snap-align: start; padding: 22px; }
   }
   @media print {
     header.top, .calc, .btns, .contact, .check-bar button { display: none !important; }
@@ -263,7 +294,6 @@
       <svg viewBox="0 0 32 32" aria-hidden="true"><rect width="32" height="32" rx="9" fill="#1f6f6b"/><path d="M5 17h6l2-5 4 10 3-7 2 2h5" fill="none" stroke="#fff" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
       Anestesia Segura
     </a>
-    <button class="menu-btn" id="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
     <nav class="menu" id="menu" aria-label="Seções">
       <ul>
         <li><a href="#avaliacao">Avaliação</a></li>
@@ -384,6 +414,7 @@
       <h2>Tipos de anestesia</h2>
       <p class="lead">A escolha depende do procedimento, da sua saúde e da sua preferência. Muitas vezes, dois tipos são combinados para você ter menos dor depois.</p>
     </div>
+    <p class="swipe-hint" aria-hidden="true">Deslize para ver os 5 tipos →</p>
     <div class="types">
       <article class="type">
         <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></div>
@@ -580,16 +611,23 @@
 </footer>
 
 <script>
-  // Menu no celular
-  const menuBtn = document.getElementById('menu-btn');
+  // Menu: destaca a seção que está na tela e, no celular, desliza a fileira até ela
   const menu = document.getElementById('menu');
-  menuBtn.addEventListener('click', () => {
-    const aberto = menu.classList.toggle('open');
-    menuBtn.setAttribute('aria-expanded', aberto);
-  });
-  menu.addEventListener('click', e => {
-    if (e.target.tagName === 'A') { menu.classList.remove('open'); menuBtn.setAttribute('aria-expanded', false); }
-  });
+  const links = [...menu.querySelectorAll('a')];
+  const espia = new IntersectionObserver(entradas => {
+    entradas.forEach(en => {
+      if (!en.isIntersecting) return;
+      links.forEach(a => {
+        const ativo = a.hash === '#' + en.target.id;
+        a.classList.toggle('ativo', ativo);
+        if (ativo && menu.scrollWidth > menu.clientWidth) {
+          const r = a.getBoundingClientRect(), m = menu.getBoundingClientRect();
+          menu.scrollBy({ left: r.left - m.left - (m.width - r.width) / 2, behavior: 'smooth' });
+        }
+      });
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+  links.forEach(a => { const s = document.querySelector(a.hash); if (s) espia.observe(s); });
 
   // Calculadora de jejum: limite = procedimento − horas
   const REGRAS = [
@@ -609,7 +647,7 @@
       const vespera = lim < 0;
       lim = (lim + 1440) % 1440;
       const t = String(Math.floor(lim / 60)).padStart(2, '0') + ':' + String(lim % 60).padStart(2, '0');
-      return `<li><span class="rl">${r.o}<br>pode até</span><span class="rt">${t}${vespera ? '<em>no dia anterior</em>' : ''}</span></li>`;
+      return `<li><span class="rl">${r.o}<small>pode até</small></span><span class="rt">${t}${vespera ? '<em>no dia anterior</em>' : ''}</span></li>`;
     }).join('');
   }
   hora.addEventListener('input', calcular);
