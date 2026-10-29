@@ -230,7 +230,7 @@
   .doc { display: grid; grid-template-columns: 220px 1fr; gap: 40px; align-items: center; }
   .doc > * { min-width: 0; }
   @media (max-width: 760px) { .doc { grid-template-columns: 1fr; gap: 24px; } }
-  .avatar { width: 220px; height: 220px; max-width: 100%; border-radius: 28px; background: var(--surface-2); border: 2px dashed var(--line); display: grid; place-items: center; color: var(--muted); font-size: 15px; text-align: center; padding: 20px; }
+  .avatar { width: 220px; height: 220px; max-width: 100%; border-radius: 28px; object-fit: cover; background: var(--surface-2); box-shadow: var(--shadow); }
   @media (max-width: 760px) { .avatar { width: 120px; height: 120px; border-radius: 22px; } }
   .doc h2 { margin-bottom: 6px; }
   .reg { color: var(--accent-strong); font-weight: 600; margin-bottom: 18px; }
@@ -302,7 +302,7 @@
         <li><a href="#no-dia">No dia</a></li>
         <li><a href="#recuperacao">Recuperação</a></li>
         <li><a href="#duvidas">Dúvidas</a></li>
-        <li><a href="#medico">Contato</a></li>
+        <li><a href="#medico">O médico</a></li>
       </ul>
     </nav>
   </div>
@@ -575,16 +575,12 @@
 <section id="medico">
   <div class="wrap">
     <div class="doc">
-      <div class="avatar" aria-hidden="true">Foto do médico</div>
+      <img class="avatar" src="foto-medico.jpg" alt="Dr. Fabio de Sieno, médico anestesiologista" width="220" height="220">
       <div>
         <p class="eyebrow">Responsável pelo conteúdo</p>
-        <h2>Dr. [Nome do médico]</h2>
-        <p class="reg">Médico anestesiologista · CRM-[UF] [número] · RQE [número]</p>
-        <p class="lead">[Uma ou duas frases sobre a formação e onde atua: hospitais, cidade e há quantos anos trabalha com anestesia.]</p>
-        <div class="contact">
-          <a class="btn primary" href="#medico" data-preencher="whatsapp">Falar no WhatsApp</a>
-          <a class="btn ghost" href="#medico" data-preencher="email">Enviar e-mail</a>
-        </div>
+        <h2>Dr. Fabio de Sieno</h2>
+        <p class="reg">Médico anestesiologista · CRM-BA 18257 · RQE 13375</p>
+        <p class="lead">Especialista em Anestesiologia, com registro no Conselho Regional de Medicina da Bahia desde 2006. Este site reúne orientações para ajudar pacientes a chegarem preparados e tranquilos ao procedimento.</p>
       </div>
     </div>
   </div>
@@ -596,6 +592,7 @@
   <div class="wrap">
     <div>
       <p><strong>Anestesia Segura</strong> é um site educativo. As informações aqui não substituem a consulta pré-anestésica nem as orientações da sua equipe médica.</p>
+      <p>Responsável técnico: <strong>Dr. Fabio de Sieno</strong> · CRM-BA 18257 · RQE 13375 (Anestesiologia).</p>
       <p class="emerg">Em caso de emergência, ligue <strong>192</strong> (SAMU).</p>
     </div>
     <div>
@@ -677,10 +674,6 @@
     try { localStorage.removeItem(CHAVE); } catch (e) {}
     atualizar();
   });
-  atualizar();
-
-  // shortcut: contatos ainda sem dados reais, trocar href quando o médico passar WhatsApp/e-mail
-  document.querySelectorAll('[data-preencher]').forEach(a => a.addEventListener('click', e => e.preventDefault()));
-</script>
+  atualizar();</script>
 </body>
 </html>
